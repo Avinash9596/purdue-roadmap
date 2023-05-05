@@ -1,0 +1,31 @@
+.card.full-card {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 99999;
+  border-radius: 0;
+  width: calc(100vw) !important;
+  height: 100vh !important;
+}
+.input .search {
+  width: 66%;
+  border-radius: 26px;
+  border: 1px solid #ada9a9;
+  padding: 1% 6%;
+  margin: 1% 1%;
+  background-image: url(https://www.pngarea.com/pngm/109/1164446_searchicon-png-search-icon-png-download.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  outline: 0;
+  background-position: 12px;
+  background-size: 16px;
+}
+.form-control-borderless {
+  border: none;
+}
+
+.form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}

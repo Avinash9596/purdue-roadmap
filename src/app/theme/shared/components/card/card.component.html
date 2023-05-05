@@ -1,0 +1,163 @@
+<div class="card" [ngClass]="cardClass" [@cardRemove]="cardRemove" #toAnimate>
+  <!-- animates animatesInitMode="show" [animatesOnInit]="{useVisibility: false, disabled: true}" -->
+  <div class="card-header" *ngIf="!hidHeader" [ngClass]="headerClass">
+    <h5 *ngIf="!customHeader">{{ cardTitle }}</h5>
+    <p *ngIf="!customHeader && cardCaption" [ngClass]="captionClass">
+      {{ cardCaption }}
+    </p>
+    <div class="card-header-right" *ngIf="this.options && !customHeader">
+      <!-- <div *ngIf="User != 'Admin'"class="btn-group card-option dropdown" ngbDropdown placement="auto">
+        <button type="button" class="btn dropdown-toggle btn-icon" ngbDropdownToggle>
+          <i class="feather icon-more-horizontal"></i>
+        </button>
+        <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+          <li class="dropdown-item full-card" (click)="fullCardToggle(toAnimate, '', true)"><a href="javascript:"><span><i class="feather" [ngClass]="fullIcon"></i> {{this.cardClass === 'full-card' ? 'Restore' : 'Maximize'}}</span></a></li>
+          <li class="dropdown-item minimize-card" (click)="collapsedCardToggle()"><a href="javascript:"><span><i class="feather" [ngClass]="collapsedIcon"></i> {{this.collapsedCard === 'collapsed' ? 'Expand' : 'Collapse'}} </span>
+            <span style="display:none"><i class="feather icon-plus"></i></span></a></li>
+          <li class="dropdown-item reload-card" (click)="cardRefresh()"><a href="javascript:"><i class="feather icon-refresh-cw"></i> Reload</a></li>
+          <li class="dropdown-item close-card" (click)="cardRemoveAction()"><a href="javascript:"><i class="feather icon-trash"></i> Remove</a></li>
+        </ul>
+      </div> -->
+      <div *ngIf="User == 'Admin' && showAddEventButton">
+        <div class="input-group">
+          <div class="form-outline">
+            <input
+              type="search"
+              style="height: '38px'"
+              id="form1"
+              class="form-control"
+            />
+          </div>
+          <button
+            style="height: '38px'"
+            type="button"
+            class="btn btn-primary"
+            (click)="searchThroughTable()"
+          >
+            <i class="fas fa-search"></i>
+          </button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <div>
+            <button
+              data-target="#modalContactForm"
+              (click)="openModal()"
+              data-toggle="modal"
+              class="btn btn-primary"
+              style="font-weight: 600; height: 38px"
+            >
+              <span class="feather icon-plus" style="font-weight: 600"></span>
+              &nbsp;&nbsp;Add Event
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="input-group" *ngIf="User != 'Admin' && searchBar">
+        <div class="form-outline">
+          <input
+            type="search"
+            style="height: '38px'"
+            id="form1"
+            class="form-control"
+          />
+        </div>
+        <button style="height: '38px'" type="button" class="btn btn-primary">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </div>
+    <ng-content *ngIf="customHeader" select=".app-card-header"></ng-content>
+  </div>
+  <div
+    [@collapsedCard]="collapsedCard"
+    *ngIf="this.options; else subMenuContent"
+  >
+    <ng-container *ngTemplateOutlet="subMenuContent"></ng-container>
+  </div>
+  <ng-template #subMenuContent>
+    <div class="card-body" [ngClass]="blockClass">
+      <ng-content></ng-content>
+    </div>
+  </ng-template>
+  <div *ngIf="isCardFooter" class="card-footer" [ngClass]="footerClass">
+    <ng-content select=".app-card-footer"></ng-content>
+  </div>
+  <div class="card-loader" *ngIf="loadCard">
+    <i class="pct-loader1 anim-rotate"></i>
+  </div>
+</div>
+
+<div
+  [ngStyle]="{ display: display }"
+  class="modal"
+  id="modalContactForm"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Add Event Details</h4>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          (click)="closePopup()"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <i class="fas fa-user prefix grey-text"></i>
+          <input
+            type="text"
+            placeholder="Event Name"
+            id="form34"
+            class="form-control validate"
+          />
+          <!-- <label data-error="wrong" data-success="right" for="form34">Event name</label> -->
+        </div>
+
+        <div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input
+            type="email"
+            id="form29"
+            placeholder="Place"
+            class="form-control validate"
+          />
+          <!-- <label data-error="wrong" data-success="right" for="form29">Place</label> -->
+        </div>
+
+        <div class="md-form mb-5">
+          <i class="fas fa-calendar prefix grey-text"></i>
+          <input
+            type="date"
+            id="form32"
+            placeholder="Date"
+            class="form-control validate"
+          />
+          <!-- <label data-error="wrong" data-success="right" for="form32">Date</label> -->
+        </div>
+
+        <div class="md-form">
+          <i class="fas fa-pencil prefix grey-text"></i>
+          <textarea
+            type="text"
+            id="form8"
+            placeholder="Event Description"
+            class="md-textarea form-control"
+            rows="4"
+          ></textarea>
+          <!-- <label data-error="wrong" data-success="right" for="form8">Description</label> -->
+        </div>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button style="text-align: center" class="btn btn-primary">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
